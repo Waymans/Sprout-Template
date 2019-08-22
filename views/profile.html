@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta class="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Dashboard | Template</title>
+        <link href="https://fonts.googleapis.com/css?family=Quattrocento&display=swap" rel="stylesheet">
+        <link rel="shortcut icon" href="../sprout2.svg">
+        <link rel="stylesheet" href="../css/main.css">
+        <link rel="stylesheet" href="../css/sidebar.css">
+        <script src="../js/sidebar.js" defer></script>
+    </head>
+    <body>
+
+        <!-- navbar -->
+        <header>
+          <nav class="topnav">
+            <input class="topnav-input" id="nav" type="checkbox">
+            <div class="topnav-top">
+              <hr class="topnav-above">
+              <a href="/articles">Articles</a>
+              <hr>
+              <a href="/login">Login</a>
+              <hr class="topnav-below">
+            </div>
+            <div class="topnav-bottom">
+              <a href="/" class="logo">Sprout</a>
+              <label class="topnav-showMore" for="nav"><img src="../mobile-menu.svg" class="media-svg-menu"></label>
+              <a href="/articles" class="topnav-float trans-underline">Articles</a>
+              <a href="/login" class="topnav-float trans-underline">Login</a>
+            </div>
+          </nav>
+        </header> 
+
+        <!-- Page content -->
+        <div class="top-bottom">
+            <div class="container sidebar-top row">
+
+                <div class="sidebar col-20" id="sidebar">
+                    <a class="active"><span class="btn-slide">Profile</span></a>
+                    <a><span class="btn-slide">Notifications</span></a>
+                    <a><span class="btn-slide">Activity</span></a>
+                    <a><span class="btn-slide">Settings</span></a>
+                </div>
+
+                <div class="sidebar-content col-80" id="sidebar-content">
+                    <div id="profile" class="sidebar-content-text show">
+                        <h3 class="main-title">Profile Area</h3>
+                        <p>profile content</p>
+                    </div>
+                    <div id="notifications" class="sidebar-content-text hide">
+                        <h3 class="main-title">Notifications Area</h3>
+                        <p>notification content</p>
+                    </div>
+                    <div id="activity" class="sidebar-content-text hide">
+                        <h3 class="main-title">Activity Area</h3>
+                        <p>activity content</p>
+                    </div>
+                    <div id="settings" class="sidebar-content-text hide">
+                        <h3 class="main-title">Settings Area</h3>
+                        <p>settings content</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </body>
+</html>

@@ -1,0 +1,129 @@
+/* Chat Box */
+.chat-div {
+    height: 0;
+}
+.open-button {
+    background: #88ab75;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    font-family: var(--font-family);
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity .5s;
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 20px;
+    float: right;
+    width: 80px;
+}
+.chat-box {
+    visibility: hidden;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    border: none;
+    z-index: 5;
+}
+.form-container {
+    max-width: 280px;
+    min-width: 280px;
+    padding: 10px;
+    box-shadow: 0px 0px 5px #777;
+    background-color: white;
+}
+.form-container input {
+    margin-top: 0;
+}
+.form-container .chat-area {
+    box-sizing: border-box;
+    padding: 5px;
+    border: 1px solid #eee;
+    max-height: 300px;
+    min-height: 300px;
+    width: 100%;
+    margin-bottom: 0;
+    overflow: auto;
+}
+.form-container .btn {
+    font-family: var(--font-family);
+    background: var(--solid-color);
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    transition: .3s;
+    margin-bottom: 10px;
+}
+.form-container .cancel {
+    background: #2F2C48;
+}
+.form-container .btn:hover {
+    background: #55a86e;
+}
+.form-container .cancel:hover {
+    background: #2F2a8a;
+}
+.open-button:hover {
+    opacity: 1;}
+@media only screen and (max-width: 400px){
+    .form-container {
+        max-width: 100%;
+        min-width: 100%;
+        padding: 0;
+  }
+    .form-container .chat-area {
+        height: 47vh;
+        max-height: none;
+        min-height: none;
+  }
+    .chat-box {
+        width: 100%;
+  }
+}
+.chat-box.show-chat {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s;
+    animation: fadein .5s;
+}
+.chat-box.hide-chat {
+    visibility: visible;
+    -webkit-animation: fadeout 0.5s;
+    animation: fadeout .5s;
+}
+.chat-box.hidden {
+    visibility: hidden;
+}
+@-webkit-keyframes fadein {
+    from {
+        right: -300px;
+    } 
+    to {
+        right: 0;
+    }
+}
+@keyframes fadein {
+    from {
+        right: -300px;
+    }
+    to {
+        right: 0;
+    }
+}
+@-webkit-keyframes fadeout {
+    from {
+        right: 0;
+    } 
+    to {
+        right: -300px;
+    }
+}
+@keyframes fadeout {
+    from {
+        right: 0;
+    }
+    to {
+        right: -300px;
+    }
+}

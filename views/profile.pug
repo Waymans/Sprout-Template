@@ -3,32 +3,39 @@
 include pug/head.pug
 +link('../css/main.css')
 +link('../css/sidebar.css')
++link('../css/switch.css')
 +script('../js/sidebar.js')
 header
 include pug/topnav.pug
 // Page content
 .top-bottom
-  .container.sidebar-top.row
-    #sidebar.sidebar.col-20
-      a.active
-        span.btn-slide Profile
-      a
-        span.btn-slide Notifications
-      a
-        span.btn-slide Activity
-      a
-        span.btn-slide Settings
-    #sidebar-content.sidebar-content.col-80
-      #profile.sidebar-content-text.show
-        h3.main-title Profile Area
-        p profile content
-      #notifications.sidebar-content-text.hide
-        h3.main-title Notifications Area
-        p notification content
-      #activity.sidebar-content-text.hide
-        h3.main-title Activity Area
-        p activity content
-      #settings.sidebar-content-text.hide
-        h3.main-title Settings Area
-        p settings content
-        a.trans-underline(href='/logout') Logout
+    .container.sidebar-top.row
+        #sidebar.sidebar.col-20
+            a.active
+                span.btn-slide Profile
+            a
+                span.btn-slide Notifications
+            a
+                span.btn-slide Activity
+            a
+                span.btn-slide Settings
+        #sidebar-content.sidebar-content.col-80
+            #profile.sidebar-content-text.show
+                h3.main-title Profile Area
+                p Welcome, #{user.first_name} #{user.last_name}!
+                p Email: #{user.user_email}
+            #notifications.sidebar-content-text.hide
+                h3.main-title Notifications Area
+                p notification content
+            #activity.sidebar-content-text.hide
+                h3.main-title Activity Area
+                p Created on: #{user.created_user_on}
+                p Last login: #{user.last_login}
+            #settings.sidebar-content-text.hide
+                h3.main-title Settings Area
+                label(for='checkbox') Theme
+                label.switch
+                    input#checkbox(type='checkbox')
+                    span.slider
+                br
+                a.trans-underline(href='/logout') Logout

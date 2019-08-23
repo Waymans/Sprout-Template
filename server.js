@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const routes = require('./src/routes');
-//const socket = require('./src/socket');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const compression = require('compression');
@@ -30,7 +29,6 @@ app.use(express.static('images'));
 app.set('view engine', 'pug');
 
 routes(app);
-//socket(app);
 
 //404 Not Found Middleware
 app.use(function(req, res, next) {

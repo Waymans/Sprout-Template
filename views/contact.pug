@@ -6,41 +6,41 @@ include pug/head.pug
 +link('../css/sidebar.css')
 header
 include pug/topnav.pug
-.contact-sidebar
-  a.github(href='https://github.com/' target='_blank') Github
-  a.facebook(href='https://facebook.com/' target='_blank') Facebook
-  a.twitter(href='https://twitter.com/' target='_blank') Twitter
-  a.instagram(href='https://instagram.com/' target='_blank') Instagram
 // Page content
+.contact-sidebar
+    a.github(href='https://github.com/' target='_blank') Github
+    a.facebook(href='https://facebook.com/' target='_blank') Facebook
+    a.twitter(href='https://twitter.com/' target='_blank') Twitter
+    a.instagram(href='https://instagram.com/' target='_blank') Instagram
 .top-bottom
-  .container
-    h2 Contact Us
-    .contact-form
-      form(action='/contact' method='post')
-        .row
-          .col-25
-            label(for='fname') First Name
-          .col-75
-            input#fname(type='text' name='first' placeholder='Your first name..')
-        .row
-          .col-25
-            label(for='lname') Last Name
-          .col-75
-            input#lname(type='text' name='last' placeholder='Your last name..')
-        .row
-          .col-25
-            label(for='email') Email
-          .col-75
-            input#email(type='email' name='email' placeholder='johnsmith@mail.com' required='')
-        .row
-          .col-25
-            label(for='subject') Subject
-          .col-75
-            input#subject(type='text' name='subject' placeholder='Subject..')
-        .row
-          .col-25
-            label(for='subject') Message
-          .col-75
-            textarea#message(name='message' placeholder='Write something..' style='height:200px')
-        .row
-          input.button.button-accent(type='submit' value='Submit')
+    .container
+        h2 Contact Us
+        .contact-form
+            form(action='/contact' method='post')
+                .row
+                    .col-25
+                        label(for='fname') First Name
+                    .col-75
+                        input#fname(type='text' name='first' placeholder='Your first name..')
+                .row
+                    .col-25
+                        label(for='lname') Last Name
+                    .col-75
+                        input#lname(type='text' name='last' placeholder='Your last name..')
+                .row
+                    .col-25
+                        label(for='email') Email
+                    .col-75
+                        input#email(type='email' name='email' placeholder='johnsmith@mail.com' required='')
+                .row
+                    .col-25
+                        label(for='subject') Subject
+                    .col-75
+                        input#subject(type='text' name='subject' placeholder='Subject..')
+                .row
+                    .col-25
+                        label(for='subject') Message
+                    .col-75
+                        textarea#message(name='message' placeholder='Write something..' style='height:200px')
+                .row
+                    input.button.button-accent(type='submit' value='Submit')

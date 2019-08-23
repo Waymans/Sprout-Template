@@ -15,53 +15,65 @@ header
 include pug/topnav.pug
 // Hero unit
 .width.height.half
-  .main-overlay.main-overlay-solid.half.opacity
-  .container.height
-    .main-content.height
-      .main-content-text
-        h1.text-light Article page
-        p.text-light
-          | Use this page to post articles from your favorite authors; or feel free to write your own. As a matter of fact, do whatever you like to this page, this is a template after all.
+    .main-overlay.main-overlay-solid.half.opacity
+        .container.height
+            .main-content.height
+                .main-content-text
+                    h1.text-light Article page
+                    p.text-light
+                        | Use this page to post articles from your favorite authors; or feel free to write your own. As a matter of fact, do whatever you like to this page, this is a template after all.
 // Page content
 main.container.sidebar-top.row
-  aside#sidebar.sidebar.sticky.col-20
-    #link-container
-    a.btn-add
-      span#addBtn.btn-slide Add
-  section#sidebar-content.col-80.sidebar-content
+    aside#sidebar.sidebar.sticky.col-20
+        #link-container
+            each val, index in user.user_titles
+                a.article(id='L-'+(index + 1) href='#A-'+(index+1))
+                    span.btn-slide #{val}
+        a.btn-add
+            span#addBtn.btn-slide Add
+    section#sidebar-content.col-80.sidebar-content
+        each val, index in user.user_titles
+            article(id='A-'+(index + 1))
+                h2 #{val}
+                p.date
+                    | #{prettyDate(user.created_article_on[index])}
+                    a.float-right.remove remove
+                    a.float-right.edit edit
+                p #{user.user_messages[index]}
+
 // Main Modal
 #create-modal.modal
-  .modal-content
-    .modal-header
-      span.close &times;
-      h2 Add an Article
-    .modal-body
-      form#create-article
-        label(for='title') Title
-        input#title(type='text' name='title' placeholder='Article' required='' maxlength='150' minlength='1')
-        label(for='message') Text
-        textarea#message(type='text' name='message' placeholder='Your text goes here..' required='' minlength='1')
-        .text-center
-          button.button.button-accent.btn-shine(type='submit') Add Article
+    .modal-content
+        .modal-header
+            span.close &times;
+            h2 Add an Article
+        .modal-body
+            form#create-article
+                label(for='title') Title
+                input#title(type='text' name='title' placeholder='Article' required='' maxlength='150' minlength='1')
+                label(for='message') Text
+                textarea#message(type='text' name='message' placeholder='Your text goes here..' required='' minlength='1')
+                .text-center
+                    button.button.button-accent.btn-shine(type='submit') Add Article
 // Remove Modal
 #remove-modal.modal
-  .modal-content
-    .modal-header
-      span.close &times;
-      h2 Are you sure?
-    .modal-body
-      button#remove-btn.button.button-accent.btn-shine(type='submit') Remove Article
+    .modal-content
+        .modal-header
+            span.close &times;
+            h2 Are you sure?
+        .modal-body
+            button#remove-btn.button.button-accent.btn-shine(type='submit') Remove Article
 // Edit Modal
 #edit-modal.modal
-  .modal-content
-    .modal-header
-      span.close &times;
-      h2 Edit this Article
-    .modal-body
-      form#edit-article
-        label(for='title') Title
-        input#title-edit(type='text' name='title' placeholder='Article' required='' maxlength='150' minlength='1')
-        label(for='message') Text
-        textarea#message-edit(type='text' name='message' placeholder='Your text goes here..' required='' minlength='1')
-        .text-center
-          button#edit-btn.button.button-accent.btn-shine(type='submit') Edit Article
+    .modal-content
+        .modal-header
+            span.close &times;
+            h2 Edit this Article
+        .modal-body
+            form#edit-article
+                label(for='title') Title
+                input#title-edit(type='text' name='title' placeholder='Article' required='' maxlength='150' minlength='1')
+                label(for='message') Text
+                textarea#message-edit(type='text' name='message' placeholder='Your text goes here..' required='' minlength='1')
+                .text-center
+                    button#edit-btn.button.button-accent.btn-shine(type='submit') Edit Article

@@ -1,122 +1,98 @@
 - var title = 'Sprout';
 - var description = 'A website template to help get started on projects.';
+mixin footerLink(href, name)
+    .footer-space
+        a.footer-link(href=href) #{name}
+mixin imageBlock(src, title, text)
+    .col-3
+        .media.text-center
+            img.media-svg-sm(src=src)
+        h4 #{title}
+        p.media-text #{text}
+
 include pug/head.pug
 +link('../css/main.css')
 +link('../css/forms.css')
-+link('../css/chat-box.css')
 +script('../js/topnav.js')
-+script('../js/chat-box.js')
 header
 include pug/topnav.pug
 // hero unit
 .main.height
-  // overlay
-  .main-overlay
-  // overlay content
-  .container.height
-    .main-content.height
-      .main-content-text
-        h1.text-light Sprout
-        h5.text-light Everything you need to grow into something big!
-        p.main-text.text-light This is a template designed to cover a variety of different use cases.
-        a.button.button-accent.btn-fix.btn-shine(href='/start') Download
-  .main-sub
-    span#scrollDown
-      img.media-svg-menu(src='../down-arrow.svg')
-.chat-div
-  // sections
-  .container.top-bottom
+    // overlay
+    .main-overlay
+    // overlay content
+    .container.height
+        .main-content.height
+            .main-content-text
+                h1.text-light Sprout
+                h5.text-light Everything you need to grow into something big!
+                p.main-text.text-light This is a template designed to cover a variety of different use cases.
+                a.button.button-accent.btn-fix.btn-shine(href='/start') Download
+    .main-sub
+        span#scrollDown
+            img.media-svg-menu(src='../down-arrow.svg')
+// sections
+.container.top-bottom
     .text-center
-      h2 Who is this for?
-      p.main-text Anyone really, but here&apos;s a few ideas.
+        h2 Who is this for?
+        p.main-text Anyone really, but here&apos;s a few ideas.
     .text-center
-      .row
-        .col-3
-          .media.text-center
-            img.media-svg-sm(src='../seeds.svg')
-          h4 Innovators
-          p.media-text A solid boilerplate for your project. Present your ideas with no hassle.
-        .col-3
-          .media.text-center
-            img.media-svg-sm(src='../drops.svg')
-          h4 Engineers
-          p.media-text A website for your designs. Easily document and share your research.
-        .col-3
-          .media.text-center
-            img.media-svg-sm(src='../sprout3.svg')
-          h4 Entrepreneurs
-          p.media-text Don&apos;t worry about how to start an online presence. We have that covered.
-  // expanded sections
-  .top-bottom.section-color.text-center
+        .row
+            +imageBlock('../seeds.svg', 'Innovators', 'A solid boilerplate for your project. Present your ideas with no hassle.')
+            +imageBlock('../drops.svg', 'Engineers', 'A website for your designs. Easily document and share your research.')
+            +imageBlock('../sprout3.svg', 'Entrepreneurs', 'Don\'t worry about how to start an online presence. We have that covered.')
+// expanded sections
+.top-bottom.section-color.text-center
     .container
-      .flex
-        .flex-half
-          img.media-svg-md(src='../sprout1.svg')
-        .flex-half.media-text
-          h2.text-dark Blend easily with other software
-          p
-            | We strive to give you the minimum amount of boilerplate possible, yet enough to fit a variety of needs. Using mostly HTML, CSS and JavaScript, you have the opportunity to mix with other libraries and frameworks of your choosing. You can remove unneeded pages for your projects or add a plethora of others.
-  .top-bottom.text-center
+        .flex
+            .flex-half
+                img.media-svg-md(src='../sprout1.svg')
+            .flex-half.media-text
+                h2.text-dark Blend easily with other software
+                p
+                    | We strive to give you the minimum amount of boilerplate possible, yet enough to fit a variety of needs. Using mostly HTML, CSS and JavaScript, you have the opportunity to mix with other libraries and frameworks of your choosing. You can remove unneeded pages for your projects or add a plethora of others.
+.top-bottom.text-center
     .container
-      .flex.flex-rev
-        .flex-half.col-rev
-          img.media-svg-md(src='../sprout2.svg')
-        .flex-half.media-text
-          h2.text-dark Simple and elegant styling
-          p
-            | Sprout gives you clean looking designs on every page keeping up with the latest design trends and best practices, all the while keeping our codebase neat and precise. We also don&apos;t forget about the mobile users; every page is fully responsive with them in our thoughts!
-  .top-bottom.section-color.text-center
+        .flex.flex-rev
+            .flex-half.col-rev
+                img.media-svg-md(src='../sprout2.svg')
+            .flex-half.media-text
+                h2.text-dark Simple and elegant styling
+                p
+                    | Sprout gives you clean looking designs on every page keeping up with the latest design trends and best practices, all the while keeping our codebase neat and precise. We also don&apos;t forget about the mobile users; every page is fully responsive with them in our thoughts!
+.top-bottom.section-color.text-center
     .container
-      .flex
-        .flex-half
-          img.media-svg-md(src='../sprout3.svg')
-        .flex-half.media-text
-          h2.text-dark Primed and ready to go
-          p
-            | With Sprout everything can be up and running in minutes. With just a few small changes&mdash;depending on what you need&mdash;you&apos;ll be able to share your project to anyone. Feel free to just use the front end pages or use the full package that includes an Express server with authorization and database setups.
-  // special section
-  .special.top-bottom
+        .flex
+            .flex-half
+                img.media-svg-md(src='../sprout3.svg')
+            .flex-half.media-text
+                h2.text-dark Primed and ready to go
+                p
+                    | With Sprout everything can be up and running in minutes. With just a few small changes&mdash;depending on what you need&mdash;you&apos;ll be able to share your project to anyone. Feel free to just use the front end pages or use the full package that includes an Express server with authorization and database setups.
+// special section
+.special.top-bottom
     .container.text-center
-      div
-        h2.text-light Start growing now
-        p Grab a version of your choosing and get started straight away.
-        a.button.button-accent.btn-fix.btn-shine(href='/start') Download
-  // chat-box
-  #chat-box.chat-box
-    form.form-container.text-center(action='/chat')
-      label.hide(for='msg')
-        b Message
-      #chat-area.chat-area
-      input(type='text' placeholder='Type message..' name='msg' required='')
-      button.btn(type='submit') Send
-      button#chat-close.btn.cancel(type='button' onclick='closeChat()') Close
-  // footer
-  footer.footer.top-bottom
+        div
+            h2.text-light Start growing now
+            p Grab a version of your choosing and get started straight away.
+            a.button.button-accent.btn-fix.btn-shine(href='/start') Download
+// footer
+footer.footer.top-bottom
     .container
-      .row
-        .col-4
-          .footer-space
-            a.footer-logo(href='/')
-              img.media-svg-logo(src='../sprout2.svg')
-        .col-4
-          .footer-space
-            a.footer-link(href='#' target='_blank') Link1
-          .footer-space
-            a.footer-link(href='#' target='_blank') Link2
-          .footer-space
-            a.footer-link(href='#' target='_blank') Link3
-        .col-4
-          .footer-space
-            a.footer-link(href='#') Link4
-          .footer-space
-            a.footer-link(href='#') Link5
-          .footer-space
-            a.footer-link(href='#') Link6
-        .col-4
-          .footer-space
-            a.footer-link(href='#') Link7
-          .footer-space
-            a.footer-link(href='/contact') Contact Us
-          .footer-space
-            a.footer-link(href='/info') Terms/Cond.
-  button#chat-open.open-button.text-center(onclick='openChat()') Chat
+        .row
+            .col-4
+                .footer-space
+                    a.footer-logo(href='/')
+                        img.media-svg-logo(src='../sprout2.svg')
+            .col-4
+                +footerLink('#', 'Link1')
+                +footerLink('#', 'Link2')
+                +footerLink('#', 'Link3')
+            .col-4
+                +footerLink('#', 'Link4')
+                +footerLink('#', 'Link5')
+                +footerLink('#', 'Link6')
+            .col-4
+                +footerLink('#', 'Link7')
+                +footerLink('/contact', 'Contact Us')
+                +footerLink('/info', 'Terms/Cond.')

@@ -1,6 +1,6 @@
 // work on adding to db, and CLEANUP CODE
 (function(){
-  
+
 let articleContainer = document.getElementById('sidebar-content'),
     linkContainer = document.getElementById('link-container'),
     removeModal = document.getElementById('remove-modal'),
@@ -18,9 +18,9 @@ let links = document.querySelectorAll('main aside .article'); // let links; once
     
     let addArticle = document.getElementById('addBtn'),
         createModal = document.getElementById('create-modal'),
-        createBtn = document.getElementById('create-article'),
-        removeBtn = document.getElementById('remove-btn'),
-        editBtn = document.getElementById('edit-btn'),
+        createArticle = document.getElementById('create-article'),
+        removeArticle = document.getElementById('remove-btn'),
+        editArticle = document.getElementById('edit-btn'),
         closeModalBtns = document.getElementsByClassName('close');
 
     addArticle.addEventListener('click', function(){
@@ -33,8 +33,33 @@ let links = document.querySelectorAll('main aside .article'); // let links; once
                 .style.display = 'none';
         }, false);
     }
+    
+    let removeLink = function removeLink(e) {
+        indexToRemove = e.target.parentNode.parentNode.id.substring(2);
+        removeModal.style.display = 'flex';
+    }
+    
+    let editLink = function editLink(e) {
+        indexToEdit = e.target.parentNode.parentNode.id.substring(2);
+        let article = document.getElementById('A-' + indexToEdit),
+            title = article.firstChild.innerText,
+            message = article.lastChild.innerText,
+            modalTitle = editModalTitle,
+            modalMessage = editModalMessage;
 
-    createBtn.addEventListener('submit', function(e) {
+        modalTitle.value = title;
+        modalMessage.value = message;
+        editModal.style.display = 'flex';
+    }
+    
+    for (let i = 0, length = articleContainer.children.length; i < length; i++) {
+        articleContainer.children[i].querySelector('.remove')
+            .addEventListener('click', removeLink, false);
+        articleContainer.children[i].querySelector('.edit')
+            .addEventListener('click', editLink, false);
+    }
+
+    createArticle.addEventListener('submit', function(e) {
         e.preventDefault();
         let title = e.target[0].value, 
             message = e.target[1].value;
@@ -44,20 +69,20 @@ let links = document.querySelectorAll('main aside .article'); // let links; once
         createModal.style.display = 'none';
     }, false);
 
-    removeBtn.addEventListener('click', function(e) {
+    removeArticle.addEventListener('click', function(e) {
         e.preventDefault();
         domInterface.removeArticleOnPage(indexToRemove);
         dbInterface.removeArticleOnDB(indexToRemove);
         removeModal.style.display = 'none';
     }, false);
 
-    editBtn.addEventListener('click', function(e) {
+    editArticle.addEventListener('click', function(e) {
         e.preventDefault();
         let title = editModalTitle.value,
             message = editModalMessage.value;
 
         domInterface.editArticleOnPage(title, message, indexToEdit);
-        dbInterface.editArticleOnDB(title, message);
+        dbInterface.editArticleOnDB(title, message, indexToEdit);
         editModal.style.display = 'none';
     }, false);
   
@@ -86,6 +111,11 @@ let links = document.querySelectorAll('main aside .article'); // let links; once
             } 
         }
     }, false);
+    
+    return {
+        removeLink: removeLink,
+        editLink: editLink
+    }
 })();
 
 let domInterface = (function(){
@@ -126,12 +156,12 @@ let dbInterface = (function(){
         fetches.addArticle({title: title, message: message});
     }
 
-    let removeArticleOnDB = function(title, message) {
-        // db
+    let removeArticleOnDB = function() {
+        fetches.removeArticle({index: indexToRemove});
     }
 
     let editArticleOnDB = function(title, message) {
-        // db
+        fetches.editArticle({index: indexToEdit, title: title, message: message});
     }
 
     return {
@@ -253,9 +283,7 @@ let fetches = (function(){
     }
   
     let editArticle = function(form){
-        axios.put('/db/articles', {
-            body: new FormData(form)
-        })
+        axios.put('/db/articles', form)
         .then(function (res) {
             console.log(res.data);
         })
@@ -265,9 +293,7 @@ let fetches = (function(){
     }
   
     let removeArticle = function(form){
-        axios.delete('/db/articles', {
-            body: new FormData(form)
-        })
+        axios.delete('/db/articles', form)
         .then(function (res) {
             console.log(res.data);
         })

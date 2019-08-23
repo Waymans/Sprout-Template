@@ -7,8 +7,14 @@ const bcrypt     = require('bcrypt');
 const saltRounds = 10;
 const auth       = require('./auth');
 const connect    = require('connect-ensure-login');
+const bodyParser = require('body-parser');
 
 module.exports = function(app) {
+    
+    // parse application/x-www-form-urlencoded
+    app.use(bodyParser.urlencoded({ extended: false }));
+    // parse application/json
+    app.use(bodyParser.json());
     
     auth(app);
 
@@ -84,8 +90,18 @@ module.exports = function(app) {
         res.render('profile', { user: req.user });
     });
     
+    let prettyDate = function prettyDate(d) {
+        let newDateTime = (new Date(d)).getTime(),
+            newDate = new Date(newDateTime),
+            localTime = newDate.toLocaleTimeString(),
+            localDate = newDate.toLocaleDateString(),
+            i = localTime.indexOf(' '),
+            shortTime = localTime.replace(localTime.substring(i - 3, i), '');
+        return localDate + ' at ' + shortTime;
+    };
+    
     app.get('/articles', connect.ensureLoggedIn('/login'), function(req, res) {
-        res.render('articles', { user: req.user });
+        res.render('articles', { user: req.user, prettyDate: prettyDate });
     });
 
     app.route('/db/articles')

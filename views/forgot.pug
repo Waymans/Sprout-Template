@@ -7,20 +7,20 @@ header
 include pug/topnav.pug
 // Page content
 .top-bottom
-  .container
-    h2 Forgot Password
-    .contact-form
-      form(action='/forgot' method='post')
-        .row
-          .col-20
-            label(for='email') Email
-          .col-80
-            input#email(type='email' name='email' placeholder='johnsmith@mail.com' required='')
-        .row
-          .col-20
-            label(for='subject') Submitting
-          .col-80
-            p#subject.text-padding
-              | We will send you an email with your password and redirect you back to the login page.
-        .row
-          button.button.button-accent.btn-shine.float-right(type='submit') Send
+    .container
+        h2 Forgot Password
+        .contact-form
+            form(action='/forgot' method='post')
+                .row
+                    .col-20
+                        label(for='email') Email
+                    .col-80
+                        input#email(type='email' name='email' placeholder='johnsmith@mail.com' required='')
+                .row
+                    .col-20
+                        label(for='subject') Submitting
+                    .col-80
+                        p#subject.text-padding
+                            | We will send you an email with your password and redirect you back to the login page.
+                .row
+                    button.button.button-accent.btn-shine.float-right(type='submit') Send

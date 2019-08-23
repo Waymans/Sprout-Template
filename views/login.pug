@@ -9,28 +9,28 @@ header
 include pug/topnav.pug
 // Authentication pages
 main.top-bottom
-  .container
-    .row
-      .col-2.top-lg.text-center
-        img.media-svg-lg(src='../sprout3.svg')
-      .col-2.top-md
-        h3.text-center Sign in to your account
-        p.text-center.bottom-sm Fill out the following to proceed
-        form.login(method='post' action='/login/local' autocompelete='new-password' role='presentation')
-          label(for='email') Email
-          input#email(type='email' name='email' placeholder='johnsmith@mail.com' required='')
-          label(for='password') Password
-          input#password(type='password' name='password' placeholder='●●●●●●●●●' autocomplete='off' required='')
-          .text-center.bottom-sm
-            button.button.button-accent.btn-shine(type='submit') Log in
-          label(for='checkbox') Remember me?
-          label.switch.popup
-            input#checkbox(type='checkbox')
-            span#popupSwitch.slider.round
-            span#myPopup.popuptext
-              | We use cookies. More info 
-              a(href='/info' target='_blank') here
-              | .
-        a.pad-left(href='/forgot') Forgot password?
-        br
-        a.pad-left(href='/create') Create account?
+    .container
+        .row
+            .col-2.top-lg.text-center
+                img.media-svg-lg(src='../sprout3.svg')
+            .col-2.top-md
+                h3.text-center Sign in to your account
+                p.text-center.bottom-sm Fill out the following to proceed
+                form.login(method='post' action='/login/local' autocompelete='new-password' role='presentation')
+                    label(for='email') Email
+                    input#email(type='email' name='email' placeholder='johnsmith@mail.com' required='')
+                    label(for='password') Password
+                    input#password(type='password' name='password' placeholder='●●●●●●●●●' autocomplete='off' required='')
+                    .text-center.bottom-sm
+                        button.button.button-accent.btn-shine(type='submit') Log in
+                    label(for='checkbox') Remember me?
+                    label.switch.popup
+                        input#checkbox(type='checkbox')
+                        span#popupSwitch.slider
+                        span#myPopup.popuptext
+                            | We use cookies. More info 
+                            a(href='/info' target='_blank') here
+                            | .
+                a.pad-left(href='/forgot') Forgot password?
+                br
+                a.pad-left(href='/create') Create account?

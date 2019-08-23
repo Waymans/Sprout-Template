@@ -1,14 +1,12 @@
 # Sprout
 
 1. db setup
-2. authentication
-3. html > pug
-4. only certain pages viewable by non-users
-5. organize
-6. mocha tests
-7. README
-8. comments
-9. cookie - session token (with user ip)
+2. organize
+3. mocha tests
+4. README
+5. comments
+7. how to handle db/page additions
+6. cookie - session token (with user ip)
 
 ## Table of contents
 - [Install](#install)

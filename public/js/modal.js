@@ -232,7 +232,7 @@ let domElements = (function(){
 
 // get articles on page load
 let fetches = (function(){
-    let getArticles = function() {
+    /*let getArticles = function() {
         axios.get('/db/articles')
         .then(function (res) {
             console.log(res.data);
@@ -240,7 +240,7 @@ let fetches = (function(){
         .catch(function (err) {
             console.log(err);
         })
-    }
+    }*/
   
     let addArticle = function(form){
         axios.post('/db/articles', form)
@@ -277,13 +277,13 @@ let fetches = (function(){
     }
   
     return {
-        getArticles: getArticles,
+        //getArticles: getArticles,
         addArticle: addArticle,
         editArticle: editArticle,
         removeArticle: removeArticle
     }
 })();
 
-fetches.getArticles();
+//fetches.getArticles();
   
 })();

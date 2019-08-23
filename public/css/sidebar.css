@@ -2,40 +2,51 @@
 .sidebar {
     background: white;
     margin: 0;
-    padding: 0;}
+    padding: 0;
+}
 .sidebar a {
     box-sizing: border-box;
     display: block;
     color: #777;
     padding: 1rem 0;
     text-decoration: none;
-    transition: all .3s;}
+    transition: all .3s;
+}
 .sidebar a:hover {
     cursor: pointer;
-    color: #2AA5F1;}
+    color: #2AA5F1;
+}
 .sidebar .active {
-    color: #2AA5F1;}
+    color: #2AA5F1;
+}
 .active::before {
     content: "\2014";
-    margin-right: 0.333rem; }
+    margin-right: 0.333rem;
+}
 .sidebar-top {
-    padding-top: 5vh;}
+    padding-top: 5vh;
+}
 .sidebar-content article {
-    padding-bottom: 5rem;}
+    padding-bottom: 5rem;
+}
 .sidebar-content article h2 {
-    margin-bottom: 0;}
+    margin-bottom: 0;
+}
 .sidebar-content article .date {
     margin-bottom: 1rem;
     font-size: 13px;
-    color: #777;}
+    color: #777;
+}
 .sidebar-content article .date a {
     color: #777;
     transition: .3s;
-    margin-right: 1rem;}
+    margin-right: 1rem;
+}
 .sidebar-content article .date a:hover {
     color: #2AA5F1;
     cursor: pointer;
-    border-bottom: 1px solid #2AA5F1;}
+    border-bottom: 1px solid #2AA5F1;
+}
 
 /* contact- sidebar */
 .contact-sidebar a {
@@ -47,38 +58,50 @@
     text-decoration: none;
     font-size: 20px;
     color: white;
-    border-radius: 0 5px 5px 0;}
+    border-radius: 0 5px 5px 0;
+}
 .contact-sidebar a:hover {
-    left: 0;}
+    left: 0;
+}
 .github {
     top: 200px;
-    background: #4CAF50;}
+    background: #4CAF50;
+}
 .facebook {
     top: 250px;
-    background: #2196F3;}
+    background: #2196F3;
+}
 .twitter {
     top: 300px;
-    background: #f44336;}
+    background: #f44336;
+}
 .instagram {
     top: 350px;
-    background: #555}
+    background: #555;
+}
 
 @media screen and (max-width: 600px) {
     .sidebar {
         width: 100%;
         height: auto;
         border-bottom: 1px solid #eee;
-        position: relative;}
+        position: relative;
+    }
     .sidebar a {
         padding: .5rem 0;
         float: left;
-        width: 50%;}
+        width: 50%;
+    }
     .sidebar-content {
-        padding-top: 1rem;}
+        padding-top: 1rem;
+    }
     .sidebar-top {
-        padding-top: 0vh;}}
+        padding-top: 0vh;
+    }
+}
 .sticky {
     display: inline-block;
     position: -webkit-sticky;
     position: sticky;
-    top: 58px;}
+    top: 58px;
+}

@@ -1,0 +1,32 @@
+- var title = 'Create';
+- var description = 'Create an account.';
+include pug/head.pug
++link('../css/main.css')
++link('../css/forms.css')
+header
+include pug/topnav.pug
+// Authentication pages
+main#create.top-bottom
+  .container
+    .row
+      .col-2.top-lg.text-center
+        img.media-svg-lg(src='../sprout2.svg')
+      .col-2.top-md
+        h3.text-center Create your account
+        p.text-center.bottom-sm Fill out the following to proceed
+        form.create(method='post' action='/create' autocompelete='new-password' role='presentation')
+          label(for='first') First
+          input#first(type='text' name='first' placeholder='John' required='' pattern='[A-z]+')
+          .input-reqs.text-center Please type in your first name.
+          label(for='last') Last
+          input#last(type='text' name='last' placeholder='Smith' required='' pattern='[A-z]+')
+          .input-reqs.text-center Please type in your last name.
+          label(for='email') Email
+          input#email(type='email' name='email' placeholder='johnsmith@mail.com' required='')
+          .input-reqs.text-center Must be a valid email address.
+          label(for='password') Password
+          input#password(type='password' name='password' placeholder='●●●●●●●●●' autocomplete='off' required='' pattern='(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}')
+          .input-reqs.text-center
+            | Your password must be at least 6 characters as well as contain at least one uppercase, one lowercase, and one number.
+          .text-center
+            button.button.button-accent.btn-shine(type='submit') Create Account

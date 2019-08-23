@@ -1,8 +1,6 @@
 const pool = require('./db');
 
 function controller(){
-  
-    let userID; // or use pug
 
     const addUser = (req) => {
         const { first, last, email, password } = req
@@ -15,7 +13,7 @@ function controller(){
         })
     }
 
-    const getUser = () => {
+    /*const getUser = () => {
 
         pool.query('SELECT * FROM sprout_users WHERE id=($1)', [userID], (err, data) => {
             if (err) {
@@ -24,21 +22,31 @@ function controller(){
             userID = data.rows.id;
             return data.rows; // 200
         })
-    }
+    }*/
 
     const addArticle = (req) => {
-        const { title, message } = req
-
-        // may have to have title, message be surrounded in {}
-        pool.query('UPDATE sprout_users SET user_titles = array_cat(user_titles, ($1)), user_messages = array_cat(user_messages, ($2)) WHERE id=($3)', [title, message, userID], err => {
+        const { id, title, message } = req
+        
+        pool.query('UPDATE sprout_users SET user_titles = array_cat(user_titles, ($1)), user_messages = array_cat(user_messages, ($2)), created_article_on = arrya_cat(created_article_on, now()) WHERE id=($3)', ['{'+title+'}', '{'+message+'}', id], err => {
             if (err) {
                 throw err
             }
             return { status: 'Success', message: 'Article added.' }; // 201
         })
     }
+    
+    const editArticle = (req) => {
+        const { id, index, title, message } = req.body
+        console.log(index, title, message)
+        pool.query('UPDATE sprout_users SET user_titles = array_remove(user_titles, user_titles[($1)], ($2)), user_messages = array_remove(user_messages, user_messages[($1)], ($3)) WHERE id=($4)', [index, title, message, id], err => {
+            if (err) {
+                throw err
+            }
+            return { status: 'Success', message: 'Article removed.' }; // 201
+        })
+    }
 
-    const getArticles = () => {
+    /*const getArticles = () => {
       
         pool.query('SELECT user_titles, user_messages, created_article_on FROM sprout_users WHERE id=($1)', [userID], (err, data) => {
             if (err) {
@@ -46,12 +54,13 @@ function controller(){
             }
             return data.rows; // 200
         })
-    }
+    }*/
 
     const delArticle = (req) => {
-        const { index } = req.body
+        const { id, index } = req.body
+        console.log(index, title, message)
 
-        pool.query('UPDATE sprout_users SET user_titles = array_remove(user_titles, user_titles[($1)]), user_messages = array_remove(user_messages, user_messages[($1)]) WHERE id=($2)', [index, userID], err => {
+        pool.query('UPDATE sprout_users SET user_titles = array_remove(user_titles, user_titles[($1)]), user_messages = array_remove(user_messages, user_messages[($1)]), created_article_on = array_remove(created_article_on, created_article_on[($1)]) WHERE id=($2)', [index, id], err => {
             if (err) {
                 throw err
             }
@@ -72,9 +81,10 @@ function controller(){
     
     return {
         addUser: addUser,
-        getUser: getUser,
+        //getUser: getUser,
         addArticle: addArticle,
-        getArticles: getArticles,
+        //getArticles: getArticles,
+        editArticle: editArticle,
         delArticle: delArticle,
         getPassword: getPassword
     }

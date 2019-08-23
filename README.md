@@ -6,7 +6,9 @@
 4. only certain pages viewable by non-users
 5. organize
 6. mocha tests
-7. cookie - session token (with user ip)
+7. README
+8. comments
+9. cookie - session token (with user ip)
 
 ## Table of contents
 - [Install](#install)

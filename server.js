@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const routes = require('./src/routes');
-//const auth = require('./src/auth');
 //const socket = require('./src/socket');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
@@ -28,13 +27,14 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use(express.static('images'));
 
+app.set('view engine', 'pug');
+
 routes(app);
-//auth(app);
 //socket(app);
 
 //404 Not Found Middleware
 app.use(function(req, res, next) {
-    res.status(404).sendFile(process.cwd() + '/views/error.html');
+    res.status(404).render('error');
 });
 
 app.listen(3000, function() {

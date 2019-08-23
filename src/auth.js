@@ -6,53 +6,50 @@ const bcrypt         = require('bcrypt');
  
 module.exports = function (app) {
   
+    app.use(require('cookie-parser')());
+    app.use(require('body-parser').urlencoded({ 
+        extended: true
+    }));
+    app.use(session({
+        secret: process.env.SESSION_SECRET,
+        resave: true,
+        saveUninitialized: true
+    }));
     app.use(passport.initialize());
     app.use(passport.session());
 
     passport.serializeUser((user, done) => {
-        console.log('auth-seri: ', user);
-        done(null, user.id);
+        console.log('serialized user: ', user.rows[0]);
+        done(null, user.rows[0]);
     });
 
-    passport.deserializeUser((id, done) => {
-        console.log('auth-deseri: ', user);
-        pool.query('select * from sprout_users where id=$1', [id], (err, data) => {
+    passport.deserializeUser((user, done) => {
+        console.log('deserialized user.id: ', user.id);
+        /*pool.query('SELECT * FROM sprout_users WHERE id=$1', [user.id], (err, data) => {
             if (err) {
                 console.log(err.stack)
             } else {
-                done(null, data.rows);
+                done(null, data.rows[0]);
             }
-        });
+        });*/
+        done(null, user);
     });
 
-    passport.use('local', new LocalStrategy(
-        function(email, password, done) {
+    passport.use('local', new LocalStrategy({
+        usernameField: 'email',
+        passwordField: 'password',
+        session: false
+    }, function(email, password, done) {
             console.log('auth: ', email, password);
-            pool.query('SELECT user_pass FROM sprout_users WHERE user_email=($1)', [email], function (err, user) {
+            pool.query('SELECT * FROM sprout_users WHERE user_email=($1)', [email], function (err, data) {
                 if (err) { return done(err); }
-                if (!user) { return done(null, false); }
-                bcrypt.compare(password, user.password, function(err, res) { 
-                    if (res === true) { return done(null, user); }
+                if (!data) { return done(null, false); }
+                let user_pass = data.rows[0].user_pass;
+                bcrypt.compare(password, user_pass, function(err, res) {
+                    if (res) { return done(null, data); }
                     else { return done(null, false); }
                 }) 
             });
         }
     ));
-  
-    /*passport.use(new LocalStrategy(
-        function(accessToken, refreshToken, profile, cb) {
-            console.log('auth-init: ', profile);
-            pool.query('INSERT INTO sprout_users (first_name, last_name, user_email, user_pass) VALUES ($1, $2, $3, $4)', [first, last, email, password], (err, result) => {
-              if(err) {
-                  console.log(err)
-                  return cb(err)
-              }
-              if(result) {
-                  cb(null, profile)
-              } else {
-                  cb(null, false)
-              }
-           })
-        }
-    ));*/
 }

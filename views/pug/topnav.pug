@@ -1,0 +1,26 @@
+mixin web(name, href)
+    a.topnav-float.trans-underline.text-light(href=href) #{name}
+mixin mob(name, href)
+    a(href=href) #{name}
+
+nav.topnav
+    input#nav.topnav-input(type='checkbox')
+    .topnav-top
+        hr.topnav-above
+        +mob('Profile', '/profile')
+        hr
+        +mob('Article', '/articles')
+        hr
+        +mob('Login', '/login')
+        hr.topnav-below
+    #topnav-opacity.topnav-bottom
+        a.logo(href='/') Sprout
+        label.topnav-showMore(for='nav')
+            img.media-svg-menu(src='../mobile-menu.svg')
+        if user
+            unless title === 'Profile'
+                +web('Profile', '/profile')
+            unless title === 'Articles'
+                +web('Articles', '/articles')
+        else
+            +web('Login', '/login')

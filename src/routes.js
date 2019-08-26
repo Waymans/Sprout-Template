@@ -21,8 +21,8 @@ module.exports = (app) => {
     });
     
     app.get('/login', (req, res) => {
-        req.user ? res.render('profile', { user: req.user })
-        : res.render('login', { user: req.user })
+        req.user ? res.redirect('/profile')
+        : res.render('login', { user: undefined })
     });
     
     app.get('/info', (req, res) => {
@@ -52,8 +52,8 @@ module.exports = (app) => {
     
     app.route('/create')
         .get((req, res) => {
-            req.user ? res.render('profile', { user: req.user })
-            : res.render('create', { user: req.user })
+            req.user ? res.redirect('/profile') 
+            : res.render('create', { user: undefined })
         })
         .post((req, res) => {
             pool.query('SELECT id FROM sprout_users WHERE user_email=$1', [req.body.email], (err, data) => {
@@ -74,8 +74,8 @@ module.exports = (app) => {
     
     app.route('/forgot')
         .get((req, res) => {
-            req.user ? res.render('profile', { user: req.user })
-            : res.render('forgot', { user: req.user })
+            req.user ? res.redirect('profile') 
+            : res.render('forgot', { user: undefined })
         })
         .post((req, res) => { // example to just sending password
             pool.query('SELECT user_pass FROM sprout_users WHERE user_email=($1)', [req.body.email], (err, data) => {
@@ -91,7 +91,6 @@ module.exports = (app) => {
     
     // have to be logged in
     app.get('/profile', connect.ensureLoggedIn('/login'), (req, res) => {
-        console.log('test ************ :',req.user)
         res.render('profile', { user: req.user });
     });
     

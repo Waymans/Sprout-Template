@@ -21,12 +21,12 @@ module.exports = (app) => {
     app.use(passport.session());
 
     passport.serializeUser((user, done) => {
-        console.log('serialized user: ', user.rows[0]);
+        //console.log('serialized user: ', user.rows[0]);
         done(null, user.rows[0]);
     });
 
     passport.deserializeUser((user, done) => {
-        console.log('deserialized user.id: ', user.id);
+        //console.log('deserialized user.id: ', user.id);
         done(null, user);
     });
 
@@ -35,7 +35,7 @@ module.exports = (app) => {
         passwordField: 'password',
         session: false
     }, (email, password, done) => {
-            console.log('auth: ', email, password);
+            //console.log('auth: ', email, password);
             pool.query('SELECT id, first_name, last_name, user_email, user_pass, created_user_on, last_login FROM sprout_users WHERE user_email=($1)', [email], (err, data) => {
                 if (err) { return done(err); }
                 if (!data) { return done(null, false); }

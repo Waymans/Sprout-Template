@@ -15,7 +15,7 @@ let host = 'https://sprout-template.glitch.me';
 // for local testing
 server = host;
 
-let requester = chai.request(server)//.keepOpen()
+let requester = chai.request(server).keepOpen()
 
 /**
  * This is a testing function.
@@ -199,70 +199,38 @@ describe('Function testing - routes', () => {
     describe('When logged in', () => {
         
         let email = 'test@mail.com',
-            password = 'Test123';
-        let loginCredentials = {
-            'email': email,
-            'password': password
-        }
+            password = 'Test123',
+            loginCredentials = {
+                'email': email,
+                'password': password
+            };
+        // .agent() gives user-auth support
+        requester = chai.request.agent(server)
         
-        before(function(done) {
-            //describe('/login/local', () => {
-                //it('should log in to test account', (done) => {
-                    requester
-                        .post('/login/local')
-                        //.auth('test@mail.com', 'Test123')
-                        .type('form')
-                        .send(loginCredentials)
-                        .end((err, res) => {
-                            expect(err).to.be.null;
-                            expect(res).to.redirectTo(`${host}/profile`);
-                            done();
-                        });
-                //});
-            //});
+        before((done) => {
+            requester
+                .post('/login/local')
+                .send(loginCredentials)
+                .end(function(err, res){
+                    expect(err).to.be.null;
+                    expect(res).to.redirectTo(`${host}/profile`);
+                    done();
+                });
         });
-        after(function(done) {
-            /*pool.query('DELETE FROM sprout_users WHERE user_email=$1', [email], (err) => {
+
+        after((done) => {
+            pool.query('DELETE FROM sprout_users WHERE user_email=$1', [email], (err) => {
                 if (err) { throw err; }
                 done();
-            })*/
-            done();
+            })
+            //done();
         });
         
         /**
         * POST routes.
         */
         describe('POST', () => {
-            
-                /*it('should log in to test account', (done) => {
-                    requester
-                        .post('/login/local')
-                        .auth('test@mail.com', 'Test123')
-                        .type('form')
-                        .send({
-                            'email': 'test@mail.com',
-                            'password': 'Test123'
-                        })
-                        .end((err, res) => {
-                            expect(err).to.be.null;
-                            expect(res).to.redirectTo(`${host}/profile`);
-                            done();
-                        
-                            console.log('add article')
-                            requester
-                                .post('/user/articles')
-                                .type('form')
-                                .send({
-                                    'title': 'test_title',
-                                    'message': 'test_message'
-                                })
-                                .end((err, res) => {
-                                    expect(err).to.be.null;
-                                    expect(res).to.have.status(200);
-                                    done();
-                                });
-                        });
-                });*/
+
                 it('should add an article', (done) => {
                     requester
                         .post('/user/articles')
@@ -283,7 +251,7 @@ describe('Function testing - routes', () => {
         /**
         * GET routes.
         */
-        /*describe('GET', () => {
+        describe('GET', () => {
         
                 it('should get a response from /', (done) => {
                     requester
@@ -394,12 +362,12 @@ describe('Function testing - routes', () => {
                         });
                 });
         
-        })*/
+        })
         
         /**
         * PUT routes.
         */
-        /*describe('PUT', () => {
+        describe('PUT', () => {
             
                 it('should change an article', (done) => {
                     requester
@@ -421,7 +389,7 @@ describe('Function testing - routes', () => {
         /**
         * DELETE routes.
         */
-        /*describe('DELETE', () => {
+        describe('DELETE', () => {
             
                 it('should delete an article', (done) => {
                     requester
@@ -433,7 +401,7 @@ describe('Function testing - routes', () => {
                         });
                 });
             
-        })*/
+        })
         
     })
     

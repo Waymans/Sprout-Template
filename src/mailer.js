@@ -1,7 +1,13 @@
 'use strict';
 
-const nodemailer = require("nodemailer");
+const nodemailer    = require("nodemailer");
 const emailTemplate = require('./emailTemplate');
+
+const result = require('dotenv').config();
+
+if (result.error) {
+    throw result.error
+}
 
 let mailer = (body, string) => {
     const isCreate = string === 'create',

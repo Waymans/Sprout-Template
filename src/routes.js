@@ -4,12 +4,12 @@ const express    = require('express');
 const app        = express();
 const mailer     = require('../src/mailer');
 const passport   = require('passport');
-//const controller = require('./controllers');
 const bcrypt     = require('bcrypt');
 const saltRounds = 10;
 const auth       = require('./auth');
 const connect    = require('connect-ensure-login');
 const pool       = require('./db');
+const queries    = require('./queries');
 
 module.exports = (app) => {
     
@@ -56,11 +56,11 @@ module.exports = (app) => {
             : res.render('create', { user: undefined })
         })
         .post((req, res) => {
-            pool.query('SELECT id FROM sprout_users WHERE user_email=$1', [req.body.email], (err, data) => {
+            pool.query(queries.find_user, [req.body.email], (err, data) => {
                 if (err) { throw err; }
                 if (!data.rows[0]) {
                     bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
-                        pool.query('INSERT INTO sprout_users (first_name, last_name, user_email, user_pass) VALUES ($1, $2, $3, $4)', [req.body.first, req.body.last, req.body.email, hash], (err) => {
+                        pool.query(queries.create_user, [req.body.first, req.body.last, req.body.email, hash], (err) => {
                             if (err) { throw err; }
                             //mailer(req.body, 'create');
                             res.redirect('/login');
@@ -77,11 +77,13 @@ module.exports = (app) => {
             req.user ? res.redirect('profile') 
             : res.render('forgot', { user: undefined })
         })
-        .post((req, res) => { // example to just sending password
-            pool.query('SELECT user_pass FROM sprout_users WHERE user_email=($1)', [req.body.email], (err, data) => {
+        // just an example, dont use in production
+        // see Forgot Password at https://cheatsheetseries.owasp.org/
+        .post((req, res) => {
+            pool.query(queries.forgot_user, [req.body.email], (err, data) => {
                 if (err) { throw err; }
                 req.body.password = data.rows[0].user_pass;
-                //mailer(req.body, 'forgot');
+                mailer(req.body, 'forgot');
                 res.redirect('/login');
             })
         });
@@ -100,13 +102,13 @@ module.exports = (app) => {
 
     app.route('/user/articles')
         .get((req, res) => {
-            pool.query('SELECT user_titles, user_messages, created_article_on FROM sprout_users WHERE id=$1', [req.user.id], (err, data) => {
+            pool.query(queries.get_articles, [req.user.id], (err, data) => {
                 if (err) { throw err; }
                 res.json(data.rows[0]);
             })
         })
         .post((req, res) => {
-            pool.query('UPDATE sprout_users SET user_titles = array_cat(user_titles, array[$1]), user_messages = array_cat(user_messages, array[$2]), created_article_on = array_cat(created_article_on, array[now()]) WHERE id=$3', [req.body.title, req.body.message, req.user.id], (err) => {
+            pool.query(queries.add_article, [req.body.title, req.body.message, req.user.id], (err) => {
                 if (err) { throw err; }
                 res.json('posted');
             })
@@ -114,13 +116,13 @@ module.exports = (app) => {
     
     app.route('/user/articles/:articleIndex')
         .put((req, res) => {
-            pool.query('UPDATE sprout_users SET user_titles = array_replace(user_titles, user_titles[$1], $2), user_messages = array_replace(user_messages, user_messages[$1], $3) WHERE id=$4', [req.params.articleIndex, req.body.title, req.body.message, req.user.id], (err) => {
+            pool.query(queries.edit_article, [req.params.articleIndex, req.body.title, req.body.message, req.user.id], (err) => {
                 if (err) { throw err; }
                 res.json('updated');
             })
         })
         .delete((req, res) => {
-            pool.query('UPDATE sprout_users SET user_titles = array_remove(user_titles, user_titles[$1]), user_messages = array_remove(user_messages, user_messages[$1]), created_article_on = array_remove(created_article_on, created_article_on[$1]) WHERE id=$2', [req.params.articleIndex, req.user.id], (err) => {
+            pool.query(queries.del_article, [req.params.articleIndex, req.user.id], (err) => {
                 if (err) { throw err; }
                 res.send('deleted');
             })

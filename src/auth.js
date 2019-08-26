@@ -5,6 +5,7 @@ const passport       = require('passport');
 const LocalStrategy  = require('passport-local').Strategy;
 const pool           = require('./db');
 const bcrypt         = require('bcrypt');
+const queries        = require('./queries');
  
 module.exports = (app) => {
   
@@ -36,7 +37,7 @@ module.exports = (app) => {
         session: false
     }, (email, password, done) => {
             //console.log('auth: ', email, password);
-            pool.query('SELECT id, first_name, last_name, user_email, user_pass, created_user_on, last_login FROM sprout_users WHERE user_email=($1)', [email], (err, data) => {
+            pool.query(queries.login_info, [email], (err, data) => {
                 if (err) { return done(err); }
                 if (!data) { return done(null, false); }
                 let user_pass = data.rows[0].user_pass;

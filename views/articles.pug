@@ -26,20 +26,9 @@ include pug/topnav.pug
 main.container.sidebar-top.row
     aside#sidebar.sidebar.sticky.col-20
         #link-container
-            each val, index in user.user_titles
-                a.article(id='L-'+(index + 1) href='#A-'+(index+1))
-                    span.btn-slide #{val}
         a.btn-add
             span#addBtn.btn-slide Add
     section#sidebar-content.col-80.sidebar-content
-        each val, index in user.user_titles
-            article(id='A-'+(index + 1))
-                h2 #{val}
-                p.date
-                    | #{prettyDate(user.created_article_on[index])}
-                    a.float-right.remove remove
-                    a.float-right.edit edit
-                p #{user.user_messages[index]}
 
 // Main Modal
 #create-modal.modal

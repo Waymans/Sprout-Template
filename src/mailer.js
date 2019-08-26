@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
 const nodemailer = require("nodemailer");
 const emailTemplate = require('./emailTemplate');
 
-function mailer(body, string) {
+let mailer = (body, string) => {
     const isCreate = string === 'create',
           isForgot = string === 'forgot',
           isContact = string === 'contact';
@@ -33,7 +33,7 @@ function mailer(body, string) {
         } else {
             // all emails are catched by ethereal.email
             mailConfig = {
-                host: process.env.HOST,
+                host: process.env.E_HOST,
                 port: 587,
                 auth: {
                     user: process.env.USER,

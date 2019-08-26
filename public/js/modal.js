@@ -14,7 +14,7 @@ let articleContainer = document.getElementById('sidebar-content'),
 
 let links = document.querySelectorAll('main aside .article'); // let links; once db is setup
 
-(function listeners(){
+let listeners = (function(){
     
     let addArticle = document.getElementById('addBtn'),
         createModal = document.getElementById('create-modal'),
@@ -52,7 +52,15 @@ let links = document.querySelectorAll('main aside .article'); // let links; once
         editModal.style.display = 'flex';
     }
     
-    for (let i = 0, length = articleContainer.children.length; i < length; i++) {
+    let sidebarLink = function editLink(e) {
+        let current = document.getElementsByClassName("active");
+        //current.length ? current[0].classList.remove("active") : null;
+        current.length ? current[0].className =
+            current[0].classList.remove("active") : null;
+        this.className = 'active';
+    }
+    
+    for (let i = 0, len = articleContainer.children.length; i < len; i++) {
         articleContainer.children[i].querySelector('.remove')
             .addEventListener('click', removeLink, false);
         articleContainer.children[i].querySelector('.edit')
@@ -114,7 +122,8 @@ let links = document.querySelectorAll('main aside .article'); // let links; once
     
     return {
         removeLink: removeLink,
-        editLink: editLink
+        editLink: editLink,
+        sidebarLink: sidebarLink
     }
 })();
 
@@ -153,15 +162,21 @@ let domInterface = (function(){
 let dbInterface = (function(){
 
     let addArticleOnDB = function(title, message) {
-        fetches.addArticle({title: title, message: message});
+        fetches.addArticle({
+            title: title, message: message
+        });
     }
 
     let removeArticleOnDB = function() {
-        fetches.removeArticle({index: indexToRemove});
+        fetches.removeArticle({
+            index: indexToRemove
+        });
     }
 
     let editArticleOnDB = function(title, message) {
-        fetches.editArticle({index: indexToEdit, title: title, message: message});
+        fetches.editArticle({
+            index: indexToEdit, title: title, message: message
+        });
     }
 
     return {
@@ -205,28 +220,14 @@ let domElements = (function(){
         h2.innerText = title;
         info.innerText = prettyDate(date);
         info.className = 'date';
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////// change listeners?
+        
         remove.innerText = 'remove';
         remove.className = 'float-right';
-        remove.addEventListener('click', function(e) {
-            indexToRemove = e.target.parentNode.parentNode.id.substring(2);
-            removeModal.style.display = 'flex';
-        }, false);
+        remove.addEventListener('click', listeners.removeLink, false);
 
         edit.innerText = 'edit';
         edit.className = 'float-right';
-        edit.addEventListener('click', function(e) {
-            indexToEdit = e.target.parentNode.parentNode.id.substring(2);
-            let article = document.getElementById('A-' + indexToEdit),
-                title = article.firstChild.innerText,
-                message = article.lastChild.innerText,
-                modalTitle = editModalTitle,
-                modalMessage = editModalMessage;
-
-            modalTitle.value = title;
-            modalMessage.value = message;
-            editModal.style.display = 'flex';
-        }, false);
+        edit.addEventListener('click', listeners.editLink, false);
 
         p.innerText = message;
         append(info, remove);
@@ -243,11 +244,7 @@ let domElements = (function(){
         a.className = 'article';
         a.href = '#A-' + articleIndex;
         a.id = 'L-' + articleIndex;
-        a.addEventListener('click', function(e) {
-            let current = document.getElementsByClassName("active");
-                current.length ? current[0].className = current[0].classList.remove("active") : null;
-            this.className = 'active';
-        }, false);
+        a.addEventListener('click', listeners.sidebarLink, false);
         span.innerText = title;
         span.className = 'btn-slide';
         append(a, span);
@@ -262,54 +259,57 @@ let domElements = (function(){
 
 // get articles on page load
 let fetches = (function(){
-    /*let getArticles = function() {
-        axios.get('/db/articles')
+    let getArticles = function() {
+        axios.get('/user/articles')
         .then(function (res) {
-            console.log(res.data);
+            let title = res.data.user_titles,
+                message = res.data.user_messages,
+                date = res.data.created_article_on;
+            if (title) {
+                for (let i = 0, length = title.length; i < length; i++) {
+                    domElements.makeArticle(title[i], message[i], date[i]);
+                    domElements.makeLink(title[i]);
+                    articleIndex++;
+                }
+            }
         })
         .catch(function (err) {
             console.log(err);
         })
-    }*/
+    }
   
     let addArticle = function(form){
-        axios.post('/db/articles', form)
-        .then(function (res) {
-            console.log(res.data);
-        })
+        // title, message
+        axios.post('/user/articles', form)
         .catch(function (err) {
             console.log(err);
         })
     }
   
     let editArticle = function(form){
-        axios.put('/db/articles', form)
-        .then(function (res) {
-            console.log(res.data);
-        })
+        // index, title, message
+        axios.put('/user/articles/'+form.index, form)
         .catch(function (err) {
             console.log(err);
         })
     }
   
     let removeArticle = function(form){
-        axios.delete('/db/articles', form)
-        .then(function (res) {
-            console.log(res.data);
-        })
+        // index
+        axios.delete('/user/articles/'+form.index)
         .catch(function (err) {
             console.log(err);
         })
     }
   
     return {
-        //getArticles: getArticles,
+        getArticles: getArticles,
         addArticle: addArticle,
         editArticle: editArticle,
         removeArticle: removeArticle
     }
 })();
 
-//fetches.getArticles();
+fetches.getArticles();
   
 })();

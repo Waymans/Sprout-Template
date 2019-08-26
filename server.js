@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require('express');
 const app = express();
 const routes = require('./src/routes');
@@ -8,7 +10,7 @@ const cors = require('cors');
 
 const isProduction = process.env.NODE_ENV === 'production';
 const origin = {
-    origin: isProduction ? 'https://www.example.com' : '*',
+    origin: isProduction ? process.env.ORIGIN : '*',
 }
 
 // only allow access on own domain in production
@@ -31,11 +33,11 @@ app.set('view engine', 'pug');
 routes(app);
 
 //404 Not Found Middleware
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
     res.status(404).render('error');
 });
 
-app.listen(3000, function() {
+app.listen(3000, () => {
     console.log('Your app is listening on port 3000');
 });
 

@@ -1,133 +1,135 @@
+'use strict';
+
 const express    = require('express');
 const app        = express();
 const mailer     = require('../src/mailer');
 const passport   = require('passport');
-const controller = require('./controllers');
+//const controller = require('./controllers');
 const bcrypt     = require('bcrypt');
 const saltRounds = 10;
 const auth       = require('./auth');
 const connect    = require('connect-ensure-login');
-const bodyParser = require('body-parser');
+const pool       = require('./db');
 
-module.exports = function(app) {
-    
-    // parse application/x-www-form-urlencoded
-    app.use(bodyParser.urlencoded({ extended: false }));
-    // parse application/json
-    app.use(bodyParser.json());
+module.exports = (app) => {
     
     auth(app);
 
     // any user can see
-    app.get('/', function(req, res) {
+    app.get('/', (req, res) => {
         res.render('index', { user: req.user })
     });
     
-    app.get('/login', function(req, res) {
+    app.get('/login', (req, res) => {
         req.user ? res.render('profile', { user: req.user })
         : res.render('login', { user: req.user })
     });
     
-    app.get('/info', function(req, res) {
+    app.get('/info', (req, res) => {
         res.render('info', { user: req.user })
     });
     
-    app.get('/privacy', function(req, res) {
+    app.get('/privacy', (req, res) => {
         res.render('privacy', { user: req.user })
     });
     
-    app.get('/thanks', function(req, res) {
+    app.get('/thanks', (req, res) => {
         res.render('thanks', { user: req.user })
     });
     
-    app.get('/download', function(req, res) {
+    app.get('/download', (req, res) => {
         res.sendFile(process.cwd() + '/data/create.bat');
     });
     
     app.route('/contact')
-        .get(function(req, res) {
+        .get((req, res) => {
             res.render('contact', { user: req.user })
         })
-        .post(function(req, res) {
-            // subject to db or email?
-            mailer(req.body, 'contact');
+        .post((req, res) => {
+            //mailer(req.body, 'contact');
             res.redirect('/thanks');
         });
     
     app.route('/create')
-        .get(function(req, res) {
+        .get((req, res) => {
             req.user ? res.render('profile', { user: req.user })
             : res.render('create', { user: req.user })
         })
-        .post(function(req, res) {
-            let password = req.body.password;
-            bcrypt.hash(password, saltRounds, function(err, hash) {
-                req.body.password = hash;
-                controller().addUser(req.body);
-                mailer(req.body, 'create');
-                res.redirect('/login');
-            });
+        .post((req, res) => {
+            pool.query('SELECT id FROM sprout_users WHERE user_email=$1', [req.body.email], (err, data) => {
+                if (err) { throw err; }
+                if (!data.rows[0]) {
+                    bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
+                        pool.query('INSERT INTO sprout_users (first_name, last_name, user_email, user_pass) VALUES ($1, $2, $3, $4)', [req.body.first, req.body.last, req.body.email, hash], (err) => {
+                            if (err) { throw err; }
+                            //mailer(req.body, 'create');
+                            res.redirect('/login');
+                        })
+                    });
+                } else {
+                    res.redirect('/create');
+                }
+            })
         });
     
     app.route('/forgot')
-        .get(function(req, res) {
+        .get((req, res) => {
             req.user ? res.render('profile', { user: req.user })
             : res.render('forgot', { user: req.user })
         })
-        .post(function(req, res) {
-            // db to lookup pasword
-            req.body.password = 'pass';
-            mailer(req.body, 'forgot');
-            // tell user to check their email
-            res.redirect('/login');
+        .post((req, res) => { // example to just sending password
+            pool.query('SELECT user_pass FROM sprout_users WHERE user_email=($1)', [req.body.email], (err, data) => {
+                if (err) { throw err; }
+                req.body.password = data.rows[0].user_pass;
+                //mailer(req.body, 'forgot');
+                res.redirect('/login');
+            })
         });
 
-    // have to be logged in
     app.post('/login/local', passport.authenticate('local', 
         { failureRedirect: '/login', successRedirect: '/profile' }));
     
-    app.get('/profile', connect.ensureLoggedIn('/login'), function(req, res) {
+    // have to be logged in
+    app.get('/profile', connect.ensureLoggedIn('/login'), (req, res) => {
+        console.log('test ************ :',req.user)
         res.render('profile', { user: req.user });
     });
     
-    let prettyDate = function prettyDate(d) {
-        let newDateTime = (new Date(d)).getTime(),
-            newDate = new Date(newDateTime),
-            localTime = newDate.toLocaleTimeString(),
-            localDate = newDate.toLocaleDateString(),
-            i = localTime.indexOf(' '),
-            shortTime = localTime.replace(localTime.substring(i - 3, i), '');
-        return localDate + ' at ' + shortTime;
-    };
-    
-    app.get('/articles', connect.ensureLoggedIn('/login'), function(req, res) {
-        res.render('articles', { user: req.user, prettyDate: prettyDate });
+    app.get('/articles', connect.ensureLoggedIn('/login'), (req, res) => {
+        res.render('articles', { user: req.user });
     });
 
-    app.route('/db/articles')
-        /*.get(function(req, res) {
-            let data = controller().getArticles();
-            res.json(data)
-        })*/
-        .post(function(req, res) {
-            req.body.id = req.user.id;
-            let data = controller().addArticle(req.body);
-            res.json(data)
+    app.route('/user/articles')
+        .get((req, res) => {
+            pool.query('SELECT user_titles, user_messages, created_article_on FROM sprout_users WHERE id=$1', [req.user.id], (err, data) => {
+                if (err) { throw err; }
+                res.json(data.rows[0]);
+            })
         })
-        .put(function(req, res) {
-            req.body.id = req.user.id;
-            let data = controller().editArticle(req.body);
-            res.json(data)
+        .post((req, res) => {
+            pool.query('UPDATE sprout_users SET user_titles = array_cat(user_titles, array[$1]), user_messages = array_cat(user_messages, array[$2]), created_article_on = array_cat(created_article_on, array[now()]) WHERE id=$3', [req.body.title, req.body.message, req.user.id], (err) => {
+                if (err) { throw err; }
+                res.json('posted');
+            })
         })
-        .delete(function(req, res) {
-            req.body.id = req.user.id;
-            let data = controller().removeArticle(req.body);
-            res.json(data)
+    
+    app.route('/user/articles/:articleIndex')
+        .put((req, res) => {
+            pool.query('UPDATE sprout_users SET user_titles = array_replace(user_titles, user_titles[$1], $2), user_messages = array_replace(user_messages, user_messages[$1], $3) WHERE id=$4', [req.params.articleIndex, req.body.title, req.body.message, req.user.id], (err) => {
+                if (err) { throw err; }
+                res.json('updated');
+            })
+        })
+        .delete((req, res) => {
+            pool.query('UPDATE sprout_users SET user_titles = array_remove(user_titles, user_titles[$1]), user_messages = array_remove(user_messages, user_messages[$1]), created_article_on = array_remove(created_article_on, created_article_on[$1]) WHERE id=$2', [req.params.articleIndex, req.user.id], (err) => {
+                if (err) { throw err; }
+                res.send('deleted');
+            })
         });
     
-    app.get('/logout', function(req, res){
-        req.logOut();
-        req.session.destroy(function (err) {
+    app.get('/logout', (req, res) => {
+        req.logout();
+        req.session.destroy( (err) => {
             res.redirect('/');
         });
     });

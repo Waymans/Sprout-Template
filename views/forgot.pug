@@ -13,6 +13,16 @@ include pug/topnav.pug
             form(action='/forgot' method='post')
                 .row
                     .col-20
+                        label(for='email') First
+                    .col-80
+                        input#email(type='text' name='first' placeholder='john.com' required='')
+                .row
+                    .col-20
+                        label(for='email') Last
+                    .col-80
+                        input#email(type='text' name='last' placeholder='smith' required='')
+                .row
+                    .col-20
                         label(for='email') Email
                     .col-80
                         input#email(type='email' name='email' placeholder='johnsmith@mail.com' required='')

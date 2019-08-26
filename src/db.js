@@ -10,7 +10,8 @@ if (result.error) {
 const { Pool } = require('pg');
 
 const pool = new Pool({
-    connectionString: isProduction ? process.env.AWS_URL : process.env.DB_URL,
+    connectionString: isProduction ? process.env.PRO_DB_URL 
+    : process.env.DEV_DB_URL,
     ssl: isProduction,
 });
 

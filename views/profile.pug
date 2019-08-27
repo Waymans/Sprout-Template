@@ -3,7 +3,6 @@
 include pug/head.pug
 +link('../css/main.css')
 +link('../css/sidebar.css')
-+link('../css/switch.css')
 +script('../js/sidebar.js')
 header
 include pug/topnav.pug
@@ -32,9 +31,4 @@ include pug/topnav.pug
                 p Created on: #{user.created_user_on}
             #settings.sidebar-content-text.hide
                 h3.main-title Settings Area
-                label(for='checkbox') Theme
-                label.switch
-                    input#checkbox(type='checkbox')
-                    span.slider
-                br
                 a.trans-underline(href='/logout') Logout

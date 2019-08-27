@@ -2,7 +2,7 @@ const queries = (() => {
     
     const login_info = (() => {
         return `SELECT id, first_name, last_name, user_email, user_pass, 
-                    created_user_on, last_login 
+                    created_user_on
                 FROM sprout_users 
                 WHERE user_email=$1`
     })();

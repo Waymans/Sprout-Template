@@ -39,12 +39,14 @@ module.exports = (app) => {
             //console.log('auth: ', email, password);
             pool.query(queries.login_info, [email], (err, data) => {
                 if (err) { return done(err); }
-                if (!data) { return done(null, false); }
-                let user_pass = data.rows[0].user_pass;
-                bcrypt.compare(password, user_pass, (err, res) => {
-                    if (res) { return done(null, data); }
-                    else { return done(null, false); }
-                }) 
+                if (!data.rows[0]) { return done(null, false); }
+                else {
+                    let user_pass = data.rows[0].user_pass;
+                    bcrypt.compare(password, user_pass, (err, res) => {
+                        if (res) { return done(null, data); }
+                        else { return done(null, false); }
+                    })
+                } 
             });
         }
     ));

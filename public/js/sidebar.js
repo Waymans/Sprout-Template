@@ -1,7 +1,7 @@
 // Dash display
 (function(){
     let links = document.querySelectorAll('#sidebar a');
-    let text = document.getElementById('sidebar-content');
+    let text  = document.getElementById('sidebar-content');
 
     for (let i = 0, length = links.length; i < length; i++) {
         links[i].addEventListener('click', function() {

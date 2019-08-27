@@ -38,7 +38,7 @@ module.exports = (app) => {
     });
     
     app.get('/download', (req, res) => {
-        res.sendFile(process.cwd() + '/data/create.bat');
+        res.download('./data/Sprout-Template-master.zip');
     });
     
     app.route('/contact')
@@ -83,7 +83,7 @@ module.exports = (app) => {
             pool.query(queries.forgot_user, [req.body.email], (err, data) => {
                 if (err) { throw err; }
                 req.body.password = data.rows[0].user_pass;
-                mailer(req.body, 'forgot');
+                //mailer(req.body, 'forgot');
                 res.redirect('/login');
             })
         });

@@ -1,12 +1,5 @@
 # Sprout
 
-1. mailer
-2. organize/move - modal
-3. README
-4. comments
-5. download
-6. how to handle db/page additions
-
 ## Table of contents
 - [Info](#what-is-it/?)
 - [Stack](#stack)
@@ -26,7 +19,7 @@ Sprout is website template that fits many use cases that gives you everything ne
 - [x] Security features w/ Helmet.js
 - [x] Function testing w/ Mocha/Chai
 - [x] Generic term/policy pages
-- [x] OAuth setup
+- [x] Auth setup
 - [x] Nodemailer
 - [x] PostgreSQL DB for user storage
 
@@ -52,7 +45,7 @@ Make sure to have node and npm installed on your computer.
 
 Download the zip file from the website, or clone the repo.
 
-> `git clone https://github.com/Waymans/web-template <folder-name>`
+> `git clone https://github.com/Waymans/Sprout-Template <folder-name>`
 
 Change into the folder directory.
 

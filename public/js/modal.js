@@ -2,10 +2,10 @@
 (function(){
 
 let articleContainer = document.getElementById('sidebar-content'),
-    linkContainer = document.getElementById('link-container'),
-    removeModal = document.getElementById('remove-modal'),
-    editModal = document.getElementById('edit-modal'),
-    editModalTitle = document.getElementById('title-edit'),
+    linkContainer    = document.getElementById('link-container'),
+    removeModal      = document.getElementById('remove-modal'),
+    editModal        = document.getElementById('edit-modal'),
+    editModalTitle   = document.getElementById('title-edit'),
     editModalMessage = document.getElementById('message-edit'),
 
     articleIndex = 1,
@@ -16,11 +16,11 @@ let links = document.querySelectorAll('main aside .article'); // let links; once
 
 let listeners = (function(){
     
-    let addArticle = document.getElementById('addBtn'),
-        createModal = document.getElementById('create-modal'),
-        createArticle = document.getElementById('create-article'),
-        removeArticle = document.getElementById('remove-btn'),
-        editArticle = document.getElementById('edit-btn'),
+    let addArticle     = document.getElementById('addBtn'),
+        createModal    = document.getElementById('create-modal'),
+        createArticle  = document.getElementById('create-article'),
+        removeArticle  = document.getElementById('remove-btn'),
+        editArticle    = document.getElementById('edit-btn'),
         closeModalBtns = document.getElementsByClassName('close');
 
     addArticle.addEventListener('click', function(){

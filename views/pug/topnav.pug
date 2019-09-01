@@ -6,13 +6,16 @@ mixin mob(name, href)
 nav.topnav
     input#nav.topnav-input(type='checkbox')
     .topnav-top
-        hr.topnav-above
-        +mob('Profile', '/profile')
-        hr
-        +mob('Article', '/articles')
-        hr
-        +mob('Login', '/login')
-        hr.topnav-below
+        if user
+            hr.topnav-above
+            +mob('Profile', '/profile')
+            hr
+            +mob('Article', '/articles')
+            hr.topnav-below
+        else
+            hr.topnav-above
+            +mob('Login', '/login')
+            hr.topnav-below
     #topnav-opacity.topnav-bottom
         a.logo(href='/') Sprout
         label.topnav-showMore(for='nav')
